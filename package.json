@@ -1,0 +1,11 @@
+{
+  "name": "net.przemieniecki.jpl.text_render",
+  "displayName": "JPL TextRender",
+  "version": "0.0.1",
+  "unity": "2019.3",
+  "dependencies": {
+    "com.unity.textmeshpro": "2.0.1",
+    "com.unity.entities": "0.3.0-preview.4"
+  },
+  "type": "library"
+}

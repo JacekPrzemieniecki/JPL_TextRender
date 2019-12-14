@@ -1,0 +1,20 @@
+{
+    "name": "JPL.TextRender",
+    "references": [
+        "Unity.Collections",
+        "Unity.TextMeshPro",
+        "Unity.Entities",
+        "Unity.Transforms",
+        "Unity.Burst",
+        "Unity.Mathematics"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
