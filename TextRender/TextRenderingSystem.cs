@@ -67,8 +67,7 @@ namespace JPL.TextRender
         public KerningRecord First;
         public KerningRecord Second;
     }
-    [Serializable]
-    public struct FontData
+    public struct FontData : IDisposable
     {
         public NativeHashMap<uint, uint> CharacterLookupTable;
         public NativeHashMap<uint, GlyphInfo> GlyphLookupTable;
@@ -77,6 +76,13 @@ namespace JPL.TextRender
         public float AtlasHeight;
         public float PointSize;
         public float Scale;
+
+        public void Dispose()
+        {
+            CharacterLookupTable.Dispose();
+            GlyphLookupTable.Dispose();
+            Kerning.Dispose();
+        }
     }
 
     [ExecuteAlways]
@@ -88,7 +94,6 @@ namespace JPL.TextRender
     [UpdateInGroup(typeof(TextRenderingSystemGroup))]
     public class TextRenderingSystem : JobComponentSystem
     {
-        EntityQuery _checkQuery;
         EntityQuery _noStateQuery;
         EntityQuery _destroyedQuery;
         EntityQuery _noHorizontalAlignmentQuery;
@@ -181,7 +186,6 @@ namespace JPL.TextRender
 
         protected override void OnCreate()
         {
-            _checkQuery = GetEntityQuery(typeof(TextToRender), typeof(TextToRenderState));
             _noStateQuery = GetEntityQuery(new EntityQueryDesc
             {
                 All = new[] { ComponentType.ReadWrite<TextToRender>() },
@@ -197,6 +201,15 @@ namespace JPL.TextRender
                 All = new[] { ComponentType.ReadWrite<TextToRender>() },
                 None = new[] { ComponentType.ReadWrite<HorizontalAlignment>() },
             });
+        }
+
+        protected override void OnDestroy()
+        {
+            for (int i = 1; i < _fonts.Count; i++)
+            {
+                var font = _fonts[i];
+                font.Dispose();
+            }
         }
 
         struct TextToRenderState : ISystemStateComponentData
